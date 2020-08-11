@@ -4,3 +4,5 @@ list.json
 node_modules
 package-lock.json
 .env
+sa.js
+analysis.json
