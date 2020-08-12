@@ -4,7 +4,6 @@ const fs = require('fs')
 const path = fs.readFileSync('./followersData.csv',{encoding : 'utf8'})
 
 
-
 /**
  * JSON to CSV
  * @url
@@ -27,6 +26,10 @@ const path = fs.readFileSync('./followersData.csv',{encoding : 'utf8'})
 
 router.post('/',async(req,res)=>{
     try {
+        // var assd = {
+        //     as : []
+
+        
         const rawData = path.split('\n')    
         const data = []
         const interns =  rawData[0].split(',')
@@ -41,17 +44,17 @@ router.post('/',async(req,res)=>{
             var arr =[]
             for(var k=0;k<data.length;k++){
                 if(data[k][j]!==undefined  && data[k][j]!=="" && data[k][j]!=="\r" ){
-                arr.push(data[k][j])
+                    var filterData =data[k][j].replace(/(\r\n|\n|\r)/gm,"")
+                    var nd = filterData.replace("@","")
+                    arr.push(nd)
                 }
             }
             finalData.interns.push({
-                name : interns[j],
+                name : interns[j].replace(/(\r\n|\n|\r)/gm,""),
                 followrs : arr
             })
         }
-        finalData.interns[interns.length-1].followrs.forEach(element => {
-        element.replace("\r"," ")
-        });
+        fs.writeFileSync('list.JSON',JSON.stringify(finalData,null,2))
         res.status(201).send(finalData)    
 
     } catch (error) {

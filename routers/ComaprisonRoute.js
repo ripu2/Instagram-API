@@ -1,3 +1,4 @@
+
 const fs = require('fs')
 const express = require('express')
 const router = express.Router()
@@ -60,7 +61,7 @@ router.post('/',async (req,res)=>{
     
  }
 
- 
+    fs.writeFileSync('analysis.JSON',JSON.stringify(data,null,2))
     res.status(201).send(data)
     } catch (error) {
         res.status(400).send(error)
