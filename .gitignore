@@ -6,3 +6,4 @@ package-lock.json
 .env
 sa.js
 analysis.json
+upload.csv
