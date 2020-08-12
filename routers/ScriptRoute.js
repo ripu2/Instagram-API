@@ -32,14 +32,14 @@ var arr = {
  */
 
 
- 
+
 
 router.get('/', async (req,res)=>{
     try {
         await client.login()
    do{
        
-    const followers = await client.getFollowers({userId : req.body.userID,first : 50,after : end})
+    const followers = await client.getFollowers({userId : 9048412451,first : 50,after : end})
     
     end = followers.page_info.end_cursor
     hasNext = followers.page_info.has_next_page
@@ -49,6 +49,7 @@ router.get('/', async (req,res)=>{
     });
     
     }while(hasNext  )
+    fs.writeFileSync('followers.json',JSON.stringify(arr,null,2))
     res.status(200).send(arr)
     } catch (error) {
         res.status(401).send(error)
@@ -56,5 +57,9 @@ router.get('/', async (req,res)=>{
 })
 
 
+
+
   
 module.exports = router
+
+
