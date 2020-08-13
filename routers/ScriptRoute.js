@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Instagram = require('instagram-web-api')
 const fs  = require('fs') 
-const client = new Instagram({ username : "4742ripu", password : "Ripu@123456"})
+const client = new Instagram({ username : "<username goes here>", password : "<password goes here>"})
 var end = ''
 var hasNext
 
