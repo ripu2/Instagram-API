@@ -40,8 +40,8 @@ router.post('/',async (req,res)=>{
          var count =0
         var iname = intersFollowList.interns[j].name
 
-        var reported = intersFollowList.interns[j].followrs.length
-        var fol = intersFollowList.interns[j].followrs
+        var reported = intersFollowList.interns[j].followers.length
+        var fol = intersFollowList.interns[j].followers
         if(fol.length!==0){
             fol.forEach(element => {
                 for(var i=0;i<checklist.length;i++){

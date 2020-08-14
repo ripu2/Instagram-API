@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const fs = require('fs')
-const path = fs.readFileSync('./followersData.csv',{encoding : 'utf8'})
-
+var path = ''
+const multer = require('multer')
 
 /**
  * JSON to CSV
@@ -22,15 +22,32 @@ const path = fs.readFileSync('./followersData.csv',{encoding : 'utf8'})
   
  * 404 - 'ID not found'
  */
+  
+  var upload = multer({ 
+      
+      fileFilter(req,file,callback){
+          if(!file.originalname.endsWith('.csv')){
+              return  callback(new Error('Unsupported File'))
+          }
+          callback(undefined,true)
+      }
+  },
+    
+  )
 
+router.get('/upload', async(req,res)=>{
+    res.sendFile(__dirname+ "/Designs/index.html");
+})
 
-router.post('/',async(req,res)=>{
+router.post('/upload',upload.single('followerDetail'),async(req,res)=>{
+
+    
     try {
-        // var assd = {
-        //     as : []
-
-        
-        const rawData = path.split('\n')    
+        path = req.file.buffer.toString();
+        fs.writeFileSync('upload.csv',path)
+        var csvdata = fs.readFileSync('./upload.csv',{encoding : 'utf-8'})
+        const rawData = csvdata.split('\n')  
+          
         const data = []
         const interns =  rawData[0].split(',')
         var finalData = {
@@ -51,15 +68,18 @@ router.post('/',async(req,res)=>{
             }
             finalData.interns.push({
                 name : interns[j].replace(/(\r\n|\n|\r)/gm,""),
-                followrs : arr
+                followers : arr
             })
         }
         fs.writeFileSync('list.JSON',JSON.stringify(finalData,null,2))
-        res.status(201).send(finalData)    
+        res.status(201).send("File Stored Suceesfully")    
 
     } catch (error) {
         res.status(404).send(error)
     }
+},(error,req,res,next)=>{
+    res.status(400).send({error : error.message})
+    next()
 })
 
 
