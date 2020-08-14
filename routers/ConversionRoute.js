@@ -35,13 +35,15 @@ const multer = require('multer')
     
   )
 
+router.get('/upload', async(req,res)=>{
+    res.sendFile(__dirname+ "/Designs/index.html");
+})
 
-
-router.post('/',upload.single('data'),async(req,res)=>{
+router.post('/upload',upload.single('followerDetail'),async(req,res)=>{
 
     
     try {
-        path = req.file.buffer,toString();
+        path = req.file.buffer.toString();
         fs.writeFileSync('upload.csv',path)
         var csvdata = fs.readFileSync('./upload.csv',{encoding : 'utf-8'})
         const rawData = csvdata.split('\n')  
@@ -70,7 +72,7 @@ router.post('/',upload.single('data'),async(req,res)=>{
             })
         }
         fs.writeFileSync('list.JSON',JSON.stringify(finalData,null,2))
-        res.status(201).send(finalData)    
+        res.status(201).send("File Stored Suceesfully")    
 
     } catch (error) {
         res.status(404).send(error)
